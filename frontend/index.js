@@ -13,12 +13,16 @@ function fetchProducts() {
 function displayProducts(json) {
   json.forEach(product => document.getElementById('product-list').innerHTML +=
     `<div class="col"> 
-      <div id="${product.id}" class="product-card" style="width: 18rem;">
-          <img src="https://${product.img_src_sm}" class="card-img-top" alt="" style="width: 150px; height: 150px;">
-          <div class="card-body">
-            <h6 class="card-title product-title">${product.name}</h6>
-            <p class="card-subtitle mb-2 text-muted product-color"><small>${product.color}</small></p>
-          </div>
+      <div id="${product.id}" class="product-card card">
+          <img src="https://${product.img_src_sm}" class="card-img-top mx-auto" alt="" style="width: 150px; height: 150px;">
+                <div class="middle">
+                      <div class="text">
+                            <div class="card-body">
+                              <h6 class="card-title product-title">${product.name}</h6>
+                              <p class="card-subtitle mb-2 text-muted product-color"><small>${product.color}</small></p>
+                            </div>
+                      </div>
+                </div>
         </div>
     </div>`)
   
@@ -68,17 +72,26 @@ function productShowPage() {
 
   function addToCart(productId) {
     document.getElementById('atc-button').addEventListener('click', () => {
-      fetch(`http://localhost:3000/cart_items/${productId}`, {
-        method: 'PATCH'
-      })
+      console.log('adding to cart...');
+      fetch('http://localhost:3000/cart_items', { method: 'POST' })
         .then(response => response.json())
         .then(json => {
-          console.log(json)
+          fetch(`http://localhost:3000/cart_items/${json.id}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ product_id: productId })
+          })
+            .then(response => response.json())
+            .then(json => {
+              console.log(json)
+            })
         })
-    })
+      })
+    }
   }
-}
   
 function displayCart() {
   
-}
+} 

@@ -1,0 +1,46 @@
+.product-card{
+  font-family: monospace;
+}
+.product-title{
+  margin-bottom: 0;
+}
+
+.product-color{
+  margin-top: 0;
+}
+
+.card-subtitle{
+  margin-top: 0;
+}
+
+.product-price{
+  font-size: 20px;
+}
+
+#product-show-page img{
+  float: right;
+}
+
+p{
+  font-family: monospace;
+}
+
+button{
+  font-family: monospace;
+  border-radius: 0 !important;
+}
+
+#cart-btn{
+  float: right;
+}
+
+#number-of-items{
+  font-family: monospace;
+}
+
+thead td, th{
+  font-family: monospace;
+  border: 0;
+  color: #666;
+  font-size: 0.9rem;
+}

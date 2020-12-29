@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
-  createCart();
   fetchProducts();
+  createCart();
   displayCart();
 })
 
@@ -19,29 +19,63 @@ function fetchProducts() {
   fetch('http://localhost:3000/products')
     .then(response => response.json())
     .then(json => {
-      displayProducts(json);
+      class Product {
+        constructor(id, name, color, description, price, category, img_src_sm, img_src_lg){
+          this.id = id; 
+          this.name = name; 
+          this.color = color; 
+          this.description = description;
+          this.price = price; 
+          this.category = category;
+          this.img_src_sm = img_src_sm;
+          this.img_src_lg = img_src_lg;
+        }
+      }
+      
+      class Products {
+        constructor() {
+          this.products = [];
+        }
+      
+        newProduct(id, name, color, description, price, category, img_src_sm, img_src_lg) {
+          let p = new Product(id, name, color, description, price, category, img_src_sm, img_src_lg);
+          this.products.push(p);
+          return p
+        }
+      
+        get allProducts() {
+          return this.products;
+        }
+      }
+      
+      let productsArray = new Products;
+      json.forEach(product => {
+        productsArray.newProduct(product.id, product.name, product.color, product.description, product.price, product.category, product.img_src_sm, product.img_src_lg)
+      })
+      displayProducts(productsArray.allProducts);
     })
 }
 
-
-function displayProducts(json) {
-  json.forEach(product => document.getElementById('product-list').innerHTML +=
-    `<div class="col"> 
-      <div id="${product.id}" class="product-card card">
-          <img src="https://${product.img_src_sm}" class="card-img-top mx-auto" alt="" style="width: 150px; height: 150px;">
-                <div class="middle">
-                      <div class="text">
-                            <div class="card-body">
-                              <h6 class="card-title product-title">${product.name}</h6>
-                              <p class="card-subtitle mb-2 text-muted product-color"><small>${product.color}</small></p>
-                            </div>
-                      </div>
-                </div>
-        </div>
-    </div>`)
-  
+function displayProducts(array) {
+array.forEach(product => {
+      document.getElementById('product-list').innerHTML +=
+        `<div class="col"> 
+        <div id="${product.id}" class="product-card card">
+            <img src="https://${product.img_src_sm}" class="card-img-top mx-auto" alt="" style="width: 150px; height: 150px;">
+                  <div class="middle">
+                        <div class="text">
+                              <div class="card-body">
+                                <h6 class="card-title product-title">${product.name}</h6>
+                                <p class="card-subtitle mb-2 text-muted product-color"><small>${product.color}</small></p>
+                              </div>
+                        </div>
+                  </div>
+          </div>
+        </div>`
+    }) 
   productShowPage();
-} 
+}
+     
 
 function productShowPage() {
   document.querySelectorAll('.product-card').forEach(product => {
